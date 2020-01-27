@@ -1,7 +1,5 @@
 closeBtn = document.getElementById('closeBtn')
 
-alert('add.js')
-
 closeBtn.addEventListener('click', function(event) {
     close()
 })

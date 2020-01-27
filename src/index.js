@@ -8,46 +8,34 @@ function showVersions() {
 
 const electron = require('electron')
 const path = require('path')
-const { BrowserWindow } = require('electron').remote
+const BrowserWindow = electron.remote.BrowserWindow
+const axios = require('axios')
 const ipc = require('electron').ipcRenderer
 
 const notifyBtn = document.getElementById('notifyBtn')
 var price = document.querySelector('h1')
 var targetPrice = document.getElementById('targetPrice')
+var targetPriceVal;
 
-function getUSD(url, success) {
-
-    var ud = '_' + +new Date,
-        script = document.createElement('script'),
-        head = document.getElementsByTagName('head')[0] 
-               || document.documentElement;
-
-    window[ud] = function(data) {
-        head.removeChild(script)
-        success && success(data)
-    }
-
-    script.src = url.replace('callback=?', 'callback=' + ud);
-    head.appendChild(script);
-}
-
-function getAPI(url) {
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET", url, false);
-    Httpreq.send(null);
-    return Httpreq.responseText;          
+const notification = {
+    title: 'USD Alert',
+    body: 'USD just beat your target price!',
+    icon: path.join(__dirname, '../assets/images/usd.png')
 }
 
 function getUSD() {
-    api = JSON.parse(getAPI('https://s3.amazonaws.com/dolartoday/data.json'))
-    console.log(api)
-    console.log(api.USD.transferencia)
-    var current_price = api.USD.transferencia
-    price.innerHTML = 'Bs. ' + current_price.toLocaleString('en')
-}
+    axios.get('https://s3.amazonaws.com/dolartoday/data.json')
+        .then(res => {
+            const current_price = res.data.USD.transferencia
+            price.innerHTML = 'Bs. ' + current_price.toLocaleString('en')
 
+            if (targetPrice.innerHTML != '' && targetPriceVal < res.data.USD.transferencia) {
+                const myNotification = new window.Notification(notification.title, notification)
+            }
+        })
+}
 getUSD()
-setInterval(getUSD, 30000)
+setInterval(getUSD, 10000)
 
 
 notifyBtn.addEventListener('click', function(event) {
@@ -67,6 +55,7 @@ notifyBtn.addEventListener('click', function(event) {
     })
     win.loadURL(modalPath)
     win.show()
+    win.webContents.openDevTools()
 })
 
 ipc.on('targetPriceVal', function (event, arg) {

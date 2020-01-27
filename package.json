@@ -19,5 +19,8 @@
   "homepage": "https://github.com/gilbertomarcano/dollar-monitor-app#readme",
   "devDependencies": {
     "electron": "7.1.9"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
   }
 }
