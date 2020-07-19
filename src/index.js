@@ -35,7 +35,7 @@ function getUSD() {
         })
 }
 getUSD()
-setInterval(getUSD, 10000)
+setInterval(getUSD, 60000)
 
 
 notifyBtn.addEventListener('click', function(event) {
@@ -44,8 +44,8 @@ notifyBtn.addEventListener('click', function(event) {
         frame: false,
         transparent: true, 
         alwaysOnTop: true, 
-        width: 900, 
-        height: 650,
+        width: 400, 
+        height: 240,
         webPreferences: {
             nodeIntegration: true
         }
@@ -55,7 +55,7 @@ notifyBtn.addEventListener('click', function(event) {
     })
     win.loadURL(modalPath)
     win.show()
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
 })
 
 ipc.on('targetPriceVal', function (event, arg) {
