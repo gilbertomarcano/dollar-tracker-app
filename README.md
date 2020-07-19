@@ -36,8 +36,6 @@ $ npm install electron --save-dev --save-exact
 $ npm install axios --save
 ```
 
-
-
 ## Usage
 
 * Go into the source directory
