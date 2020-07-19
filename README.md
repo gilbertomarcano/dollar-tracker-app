@@ -44,13 +44,17 @@ $ cd ../src
 ```
 
 * Run the app with npm
+
+```shell
 $ npm start
+```
 
 ## Build
 
 > Install electron packager 
+```shell
 $ npm install electron-packager --save-dev
-
+```
 > Run electron packager for your OS
 ```shell
 $ npm run package-win
